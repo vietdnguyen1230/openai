@@ -2,6 +2,18 @@ import React, { useEffect, useState } from "react";
 import Response from "./Response";
 import { Configuration, OpenAIApi } from "openai";
 
+const SAMPLE_INPUT_TEXTS = [
+  "Write me a haiku about oranges",
+  "Write a poem about a dog wearing skis",
+  "Write me a python program to print hello world",
+  "Write me a go concurrency program",
+  "Can AI take over the world",
+  "How does GPT-3 work",
+  "What is test based development",
+  "Write me an ocaml hello world program",
+  "Write me a poem about giraffes",
+];
+
 const configuration = new Configuration({
   apiKey: process.env.REACT_APP_OPENAI_SECRET_KEY,
 });
@@ -10,7 +22,6 @@ const openai = new OpenAIApi(configuration);
 const Prompt = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedEngines, setSelectedEngines] = useState("text-curie-001");
-  const [isLoading, setIsLoading] = useState(false);
   const [responses, setResponses] = useState([]);
   const [supportedEngines, setSupportedEngines] = useState([]);
 
@@ -53,9 +64,7 @@ const Prompt = () => {
       });
       setResponses(temp);
       saveResponses(temp);
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       alert("Something Went Wrong!");
     }
   };
@@ -116,7 +125,7 @@ const Prompt = () => {
             </button>
           </div>
         </form>
-        {responses.length > 0 && !isLoading && (
+        {responses.length > 0 && (
           <div className="flex flex-col my-5 ">
             <h1 className="text-center text-bold">Responses</h1>
             <Response responses={responses} />
